@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { nanoid } from "nanoid";
+
 import ContactForm from "./ContactForm";
 import ContactList from "./ContactList";
 import Filter from "./Filter";
 import {
-  setContacts,
+  fetchContacts,
   addContact,
   deleteContact,
 } from "../redux/features/contacts/contactSlice";
@@ -18,16 +18,8 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const storedContacts = localStorage.getItem("contacts");
-    if (storedContacts) {
-      const parsedContacts = JSON.parse(storedContacts);
-      dispatch(setContacts(parsedContacts));
-    }
+    dispatch(fetchContacts());
   }, [dispatch]);
-
-  useEffect(() => {
-    localStorage.setItem("contacts", JSON.stringify(contacts));
-  }, [contacts]);
 
   const handleAddContact = ({ name, number }) => {
     const duplicateContact = contacts.find(
